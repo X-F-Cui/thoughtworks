@@ -7,6 +7,10 @@ import json
 from pathlib import Path
 from typing import Any
 
+import nltk 
+nltk.download('punkt')
+from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
+
 
 MODELS = [
     "allenai/Olmo-3-1025-7B",
@@ -74,8 +78,6 @@ def load_task_docs(task: str, num_samples: int) -> list[dict[str, Any]]:
 def compute_self_bleu(responses: list[str]) -> float:
     if len(responses) <= 1:
         return 0.0
-
-    from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
 
     smoothie = SmoothingFunction().method1
     tokenized = [r.split() for r in responses]
