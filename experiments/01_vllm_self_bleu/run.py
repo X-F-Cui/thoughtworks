@@ -37,7 +37,12 @@ def parse_args() -> argparse.Namespace:
         choices=["gsm8k", "commonsense_qa"],
         help="Tasks to run.",
     )
-    parser.add_argument("--num-samples", type=int, default=100, help="Examples per task split to evaluate.")
+    parser.add_argument(
+        "--num-samples",
+        type=int,
+        default=None,
+        help="Examples per task split to evaluate (default: all examples in the split).",
+    )
     parser.add_argument("--n-responses", type=int, default=5, help="Generations sampled per question.")
     parser.add_argument("--max-model-len", type=int, default=4096, help="vLLM max_model_len.")
     parser.add_argument("--tensor-parallel-size", type=int, default=1, help="vLLM tensor_parallel_size.")
@@ -52,6 +57,12 @@ def parse_args() -> argparse.Namespace:
         action=argparse.BooleanOptionalAction,
         default=True,
         help="Whether to allow tokenizer/model remote code in HF repos (recommended for OLMo).",
+    )
+    parser.add_argument(
+        "--random-seed",
+        type=int,
+        default=42,
+        help="Random seed used to shuffle each task split before sampling.",
     )
     return parser.parse_args()
 
@@ -69,5 +80,6 @@ if __name__ == "__main__":
             tensor_parallel_size=args.tensor_parallel_size,
             gpu_memory_utilization=args.gpu_memory_utilization,
             trust_remote_code=args.trust_remote_code,
+            random_seed=args.random_seed,
         )
     )
