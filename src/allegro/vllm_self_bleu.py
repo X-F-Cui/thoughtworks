@@ -64,7 +64,7 @@ def load_task_docs(task: str, num_samples: int) -> list[dict[str, Any]]:
     if task == "gsm8k":
         ds = load_dataset("gsm8k", "main", split="test")
     elif task == "commonsense_qa":
-        ds = load_dataset("commonsense_qa", split="validation")
+        ds = load_dataset("tau/commonsense_qa", split="validation")
     else:
         raise ValueError(f"Unsupported task: {task}")
 
