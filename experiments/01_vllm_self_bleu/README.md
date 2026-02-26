@@ -20,6 +20,12 @@ For each model/task pair:
 
 ## Run
 
+Default run:
+
+```bash
+uv run python experiments/01_vllm_self_bleu/run.py
+```
+
 Run only **5** examples per task:
 
 ```bash
@@ -43,6 +49,7 @@ uv run python experiments/01_vllm_self_bleu/run.py \
 - `--num-samples` number of examples loaded per task split.
 - `--n-responses` generations sampled per question (default: 5).
 - `--max-model-len`, `--tensor-parallel-size`, `--gpu-memory-utilization` vLLM runtime settings.
+- `--trust-remote-code/--no-trust-remote-code` controls HF remote tokenizer/model code (default: enabled).
 
 ## Output
 

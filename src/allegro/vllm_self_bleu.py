@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
 
 MODELS = [
     "allenai/Olmo-3-1025-7B",
@@ -27,6 +26,7 @@ class EvalConfig:
     max_model_len: int = 4096
     tensor_parallel_size: int = 1
     gpu_memory_utilization: float = 0.9
+    trust_remote_code: bool = True
 
 
 def get_prompt_and_stop(task: str, doc: dict[str, Any]) -> tuple[str, list[str]]:
@@ -95,12 +95,23 @@ def run_model_on_task(model_name: str, task: str, config: EvalConfig) -> dict[st
     from vllm import LLM, SamplingParams
 
     docs = load_task_docs(task, config.num_samples)
-    llm = LLM(
-        model=model_name,
-        tensor_parallel_size=config.tensor_parallel_size,
-        max_model_len=config.max_model_len,
-        gpu_memory_utilization=config.gpu_memory_utilization,
-    )
+    try:
+        llm = LLM(
+            model=model_name,
+            tokenizer=model_name,
+            trust_remote_code=config.trust_remote_code,
+            tensor_parallel_size=config.tensor_parallel_size,
+            max_model_len=config.max_model_len,
+            gpu_memory_utilization=config.gpu_memory_utilization,
+        )
+    except AttributeError as exc:
+        if "all_special_tokens_extended" in str(exc):
+            raise RuntimeError(
+                "Tokenizer initialization failed. This model likely requires "
+                "remote-code tokenizer loading. Try `--trust-remote-code` "
+                "(enabled by default here) and ensure compatible `vllm`/`transformers` versions."
+            ) from exc
+        raise
 
     rows: list[dict[str, Any]] = []
     doc_scores: list[float] = []

@@ -39,6 +39,12 @@ def parse_args() -> argparse.Namespace:
         default=0.9,
         help="vLLM gpu_memory_utilization.",
     )
+    parser.add_argument(
+        "--trust-remote-code",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Whether to allow tokenizer/model remote code in HF repos (recommended for OLMo).",
+    )
     return parser.parse_args()
 
 
@@ -54,5 +60,6 @@ if __name__ == "__main__":
             max_model_len=args.max_model_len,
             tensor_parallel_size=args.tensor_parallel_size,
             gpu_memory_utilization=args.gpu_memory_utilization,
+            trust_remote_code=args.trust_remote_code,
         )
     )
