@@ -20,7 +20,13 @@ For each model/task pair:
 
 ## Run
 
-Default run:
+Default run (works in a plain conda/python environment too):
+
+```bash
+python experiments/01_vllm_self_bleu/run.py
+```
+
+If you prefer `uv`, this also works:
 
 ```bash
 uv run python experiments/01_vllm_self_bleu/run.py
@@ -29,13 +35,13 @@ uv run python experiments/01_vllm_self_bleu/run.py
 Run only **5** examples per task:
 
 ```bash
-uv run python experiments/01_vllm_self_bleu/run.py --num-samples 5
+python experiments/01_vllm_self_bleu/run.py --num-samples 5
 ```
 
 Run a single model + single task:
 
 ```bash
-uv run python experiments/01_vllm_self_bleu/run.py \
+python experiments/01_vllm_self_bleu/run.py \
   --models allenai/Olmo-3-7B-Instruct \
   --tasks commonsense_qa \
   --num-samples 5
@@ -55,3 +61,7 @@ uv run python experiments/01_vllm_self_bleu/run.py \
 
 - `results/<model>__<task>.json`: per-question generations + self-BLEU.
 - `results/summary.json`: average self-BLEU per model/task.
+
+## Troubleshooting
+
+If you see an error like `GPT2Tokenizer has no attribute all_special_tokens_extended`, it usually means tokenizer loading fell back to an incompatible tokenizer class. For OLMo checkpoints, keep `--trust-remote-code` enabled (default), and use compatible `vllm` + `transformers` versions.

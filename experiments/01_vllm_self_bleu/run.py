@@ -4,6 +4,14 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import sys
+
+# Allow direct execution via `python experiments/.../run.py` without requiring
+# `pip install -e .` or `uv run` by adding the repo's `src/` to PYTHONPATH.
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+_SRC_DIR = _REPO_ROOT / "src"
+if str(_SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(_SRC_DIR))
 
 from allegro.vllm_self_bleu import EvalConfig, MODELS, run
 

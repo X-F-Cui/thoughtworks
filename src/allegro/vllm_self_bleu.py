@@ -75,6 +75,8 @@ def compute_self_bleu(responses: list[str]) -> float:
     if len(responses) <= 1:
         return 0.0
 
+    from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
+
     smoothie = SmoothingFunction().method1
     tokenized = [r.split() for r in responses]
     scores: list[float] = []
