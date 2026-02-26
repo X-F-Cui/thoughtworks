@@ -20,12 +20,6 @@ For each model/task pair:
 
 ## Run
 
-Default run:
-
-```bash
-uv run python experiments/01_vllm_self_bleu/run.py
-```
-
 Run only **5** examples per task:
 
 ```bash
