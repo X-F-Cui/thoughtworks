@@ -55,7 +55,3 @@ uv run python experiments/01_vllm_self_bleu/run.py \
 
 - `results/<model>__<task>.json`: per-question generations + self-BLEU.
 - `results/summary.json`: average self-BLEU per model/task.
-
-## Troubleshooting
-
-If you see an error like `GPT2Tokenizer has no attribute all_special_tokens_extended`, it usually means tokenizer loading fell back to an incompatible tokenizer class. For OLMo checkpoints, keep `--trust-remote-code` enabled (default), and use compatible `vllm` + `transformers` versions.
