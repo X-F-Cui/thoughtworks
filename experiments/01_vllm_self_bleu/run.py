@@ -53,6 +53,12 @@ def parse_args() -> argparse.Namespace:
         default=True,
         help="Whether to allow tokenizer/model remote code in HF repos (recommended for OLMo).",
     )
+    parser.add_argument(
+        "--random-seed",
+        type=int,
+        default=42,
+        help="Random seed used to shuffle each task split before sampling.",
+    )
     return parser.parse_args()
 
 
@@ -69,5 +75,6 @@ if __name__ == "__main__":
             tensor_parallel_size=args.tensor_parallel_size,
             gpu_memory_utilization=args.gpu_memory_utilization,
             trust_remote_code=args.trust_remote_code,
+            random_seed=args.random_seed,
         )
     )

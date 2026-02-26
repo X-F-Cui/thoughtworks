@@ -53,6 +53,7 @@ python experiments/01_vllm_self_bleu/run.py \
 - `--models` one or more HF model IDs.
 - `--tasks` one or both of: `gsm8k`, `commonsense_qa`.
 - `--num-samples` number of examples loaded per task split.
+- `--random-seed` random seed used to shuffle each task split before sampling (default: 42).
 - `--n-responses` generations sampled per question (default: 5).
 - `--max-model-len`, `--tensor-parallel-size`, `--gpu-memory-utilization` vLLM runtime settings.
 - `--trust-remote-code/--no-trust-remote-code` controls HF remote tokenizer/model code (default: enabled).
