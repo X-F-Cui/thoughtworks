@@ -65,10 +65,23 @@ def get_prompt_and_stop(task: str, doc: dict[str, Any]) -> tuple[str, list[str]]
 def load_task_docs(task: str, num_samples: int) -> list[dict[str, Any]]:
     from datasets import load_dataset
 
+    def _load_dataset_with_compat_hint(*args: Any, **kwargs: Any):
+        try:
+            return load_dataset(*args, **kwargs)
+        except ValueError as exc:
+            message = str(exc)
+            if "Feature type 'List' not found" in message:
+                raise RuntimeError(
+                    "Your `datasets` package is too old to read this dataset metadata. "
+                    "Please upgrade it (for example, `pip install -U 'datasets>=2.19.0'`) "
+                    "and clear stale cache files if needed (`rm -rf ~/.cache/huggingface/datasets/tau___commonsense_qa`)."
+                ) from exc
+            raise
+
     if task == "gsm8k":
-        ds = load_dataset("gsm8k", "main", split="test")
+        ds = _load_dataset_with_compat_hint("gsm8k", "main", split="test")
     elif task == "commonsense_qa":
-        ds = load_dataset("tau/commonsense_qa", split="validation")
+        ds = _load_dataset_with_compat_hint("tau/commonsense_qa", split="validation")
     else:
         raise ValueError(f"Unsupported task: {task}")
 
