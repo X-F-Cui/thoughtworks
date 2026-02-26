@@ -20,9 +20,29 @@ For each model/task pair:
 
 ## Run
 
+Run only **5** examples per task:
+
 ```bash
-uv run python experiments/01_vllm_self_bleu/run.py
+uv run python experiments/01_vllm_self_bleu/run.py --num-samples 5
 ```
+
+Run a single model + single task:
+
+```bash
+uv run python experiments/01_vllm_self_bleu/run.py \
+  --models allenai/Olmo-3-7B-Instruct \
+  --tasks commonsense_qa \
+  --num-samples 5
+```
+
+## CLI arguments
+
+- `--output-dir` output directory for JSON files.
+- `--models` one or more HF model IDs.
+- `--tasks` one or both of: `gsm8k`, `commonsense_qa`.
+- `--num-samples` number of examples loaded per task split.
+- `--n-responses` generations sampled per question (default: 5).
+- `--max-model-len`, `--tensor-parallel-size`, `--gpu-memory-utilization` vLLM runtime settings.
 
 ## Output
 

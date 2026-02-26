@@ -9,7 +9,6 @@ from typing import Any
 
 from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
 
-
 MODELS = [
     "allenai/Olmo-3-1025-7B",
     "allenai/Olmo-3-7B-Instruct-SFT",
