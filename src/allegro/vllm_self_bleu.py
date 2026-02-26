@@ -25,7 +25,7 @@ class EvalConfig:
     output_dir: Path
     models: list[str]
     tasks: list[str]
-    num_samples: int = 5
+    num_samples: int | None = None
     n_responses: int = 5
     max_model_len: int = 4096
     tensor_parallel_size: int = 1
@@ -63,7 +63,7 @@ def get_prompt_and_stop(task: str, doc: dict[str, Any]) -> tuple[str, list[str]]
     raise ValueError(f"Unsupported task: {task}")
 
 
-def load_task_docs(task: str, num_samples: int, random_seed: int) -> list[dict[str, Any]]:
+def load_task_docs(task: str, num_samples: int | None, random_seed: int) -> list[dict[str, Any]]:
     from datasets import load_dataset
 
     if task == "gsm8k":
@@ -73,7 +73,7 @@ def load_task_docs(task: str, num_samples: int, random_seed: int) -> list[dict[s
     else:
         raise ValueError(f"Unsupported task: {task}")
 
-    sample_count = min(num_samples, len(ds))
+    sample_count = len(ds) if num_samples is None else min(num_samples, len(ds))
     sampled = ds.shuffle(seed=random_seed).select(range(sample_count))
     return [sampled[i] for i in range(sample_count)]
 

@@ -37,7 +37,12 @@ def parse_args() -> argparse.Namespace:
         choices=["gsm8k", "commonsense_qa"],
         help="Tasks to run.",
     )
-    parser.add_argument("--num-samples", type=int, default=100, help="Examples per task split to evaluate.")
+    parser.add_argument(
+        "--num-samples",
+        type=int,
+        default=None,
+        help="Examples per task split to evaluate (default: all examples in the split).",
+    )
     parser.add_argument("--n-responses", type=int, default=5, help="Generations sampled per question.")
     parser.add_argument("--max-model-len", type=int, default=4096, help="vLLM max_model_len.")
     parser.add_argument("--tensor-parallel-size", type=int, default=1, help="vLLM tensor_parallel_size.")

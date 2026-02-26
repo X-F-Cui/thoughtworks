@@ -46,3 +46,17 @@ def test_load_task_docs_is_seeded_and_reproducible(monkeypatch):
 
     assert ids_a == ids_b
     assert ids_a != ids_c
+
+
+def test_load_task_docs_defaults_to_all_examples(monkeypatch):
+    docs = [{"id": i} for i in range(7)]
+    ds = Dataset.from_list(docs)
+
+    def fake_load_dataset(*args, **kwargs):
+        return ds
+
+    monkeypatch.setattr("datasets.load_dataset", fake_load_dataset)
+
+    sample = vllm_self_bleu.load_task_docs("commonsense_qa", num_samples=None, random_seed=42)
+
+    assert len(sample) == len(docs)
